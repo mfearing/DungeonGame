@@ -57,13 +57,23 @@ public class GameScreen implements Screen {
     public void render(float v) {
         update(v);
 
+        //clear screen
         ScreenUtils.clear(0, 0, 0, 1);
+
+        //camera updates
         orthographic.camera.update();
+        batch.setProjectionMatrix(orthographic.camera.combined);
+        shapeRenderer.setProjectionMatrix(orthographic.camera.combined);
+
+        //tile map
         tileMapComponent.render(orthographic.camera); //has its own batch, everything afterward is rendered on top (I think)
+
+        //render entities
         batch.begin();
         player.render(batch);
         batch.end();
 
+        //render shapes
         Rectangle rec = player.getScreenSolidArea();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
