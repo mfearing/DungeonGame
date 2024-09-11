@@ -70,6 +70,8 @@ public class Player extends Entity{
     public void update(float delta){
         //get velocity and current position
         velocity = gs.inputComponent.getVelocity(speed, delta);
+        //get state prior to collision detection because this is the player's intended state
+        currentState = getCurrentState(velocity);
 
         //checks against tile collision and resets velocity if necessary
         gs.collisionComponent.checkTile(this);
@@ -78,8 +80,6 @@ public class Player extends Entity{
         x = x + velocity.x;
         y = y + velocity.y;
 
-
-        currentState = getCurrentState(velocity);
         currentTexture = animationComponent.getCurrentTexture(currentState, delta, gs.inputComponent.isMoving());
     }
 
