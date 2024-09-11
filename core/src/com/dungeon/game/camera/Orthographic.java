@@ -15,7 +15,7 @@ public class Orthographic {
     }
 
     public void resize(int width, int height){
-        viewport.update(width, height);
+        viewport.update(width, height, true);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
     }

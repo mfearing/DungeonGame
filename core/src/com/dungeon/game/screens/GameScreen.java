@@ -20,7 +20,6 @@ public class GameScreen implements Screen {
     public static final int TILE_SIZE = 32,
             TILE_ROWS_COLS = 15,
             WORLD_SIZE = TILE_SIZE * TILE_ROWS_COLS;
-    public static final float UNIT_SCALE = 1f / TILE_SIZE;
 
     Game game;
     public InputComponent inputComponent;

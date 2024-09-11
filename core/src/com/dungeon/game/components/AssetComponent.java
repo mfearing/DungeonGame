@@ -6,6 +6,8 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
@@ -37,6 +39,12 @@ public class AssetComponent {
     public static void loadTexture(String path){
         getManager().setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         getManager().load(path, Texture.class);
+        getManager().finishLoading();
+    }
+
+    public static void loadFont(String path){
+        getManager().setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(new InternalFileHandleResolver()));
+        getManager().load(path, FreeTypeFontGenerator.class);
         getManager().finishLoading();
     }
 
