@@ -20,7 +20,6 @@ public class GameScreen implements Screen {
     public static final int TILE_SIZE = 32,
             TILE_ROWS_COLS = 15,
             WORLD_SIZE = TILE_SIZE * TILE_ROWS_COLS;
-    public static final float UNIT_SCALE = 1f / TILE_SIZE;
 
     Game game;
     public InputComponent inputComponent;
@@ -58,13 +57,23 @@ public class GameScreen implements Screen {
     public void render(float v) {
         update(v);
 
+        //clear screen
         ScreenUtils.clear(0, 0, 0, 1);
+
+        //camera updates
         orthographic.camera.update();
+        batch.setProjectionMatrix(orthographic.camera.combined);
+        shapeRenderer.setProjectionMatrix(orthographic.camera.combined);
+
+        //tile map
         tileMapComponent.render(orthographic.camera); //has its own batch, everything afterward is rendered on top (I think)
+
+        //render entities
         batch.begin();
         player.render(batch);
         batch.end();
 
+        //render shapes
         Rectangle rec = player.getScreenSolidArea();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);

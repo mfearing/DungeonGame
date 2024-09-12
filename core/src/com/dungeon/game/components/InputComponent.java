@@ -11,6 +11,7 @@ public class InputComponent implements InputProcessor {
     public boolean downPressed = false;
     public boolean leftPressed = false;
     public boolean rightPressed = false;
+    public boolean enterPressed = false;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -26,6 +27,9 @@ public class InputComponent implements InputProcessor {
                 break;
             case Keys.D:
                 rightPressed = true;
+                break;
+            case Keys.ENTER:
+                enterPressed = true;
                 break;
         }
         return true;
@@ -45,6 +49,9 @@ public class InputComponent implements InputProcessor {
                 break;
             case Keys.D:
                 rightPressed = false;
+                break;
+            case Keys.ENTER:
+                enterPressed = false;
                 break;
         }
         return true;
