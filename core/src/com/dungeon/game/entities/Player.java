@@ -38,11 +38,14 @@ public class Player extends Entity{
     }
 
     public void initPlayer(){
-        //speed
-        speed = 4f * GameScreen.TILE_SIZE; //approximately 4 tiles per second.
 
-        //solidArea hit box
+        //initializing variables
+        currentState = previousState = ActionEnum.WALK_DOWN;
+        speed = 4f * GameScreen.TILE_SIZE; //approximately 4 tiles per second.
         solidArea = new Rectangle(4, 0, 24, 24);
+        animationComponent = new AnimationComponent(gs);
+        atlas = AssetComponent.loadAtlas(PLAYER_ATLAS);
+        //atlas = AssetComponent.getManager().get(PLAYER_ATLAS, TextureAtlas.class);
 
         //set animations map, key - action being taken, value - animations for that action
         Map<ActionEnum, List<String>> animationsMap = new HashMap<>();
@@ -55,12 +58,7 @@ public class Player extends Entity{
         animationsMap.put(ActionEnum.ATTACK_LEFT, Collections.singletonList("playerAttackLeft"));
         animationsMap.put(ActionEnum.ATTACK_RIGHT, Collections.singletonList("playerAttackRight"));
 
-        //load Animation component and its values
-        animationComponent = new AnimationComponent(gs);
-        AssetComponent.loadAtlas(PLAYER_ATLAS);
-        atlas = AssetComponent.getManager().get(PLAYER_ATLAS, TextureAtlas.class);
-
-        //TODO: I don't need this because I can send the animationsMap and the atlas to the animation component
+        //create Animations and send to the AnimationComponent based on the animationsMap
         Array<TextureRegion> regions = new Array<>();
         for(ActionEnum action : animationsMap.keySet()){
             for(String string : animationsMap.get(action)){
@@ -77,8 +75,6 @@ public class Player extends Entity{
         actingMap.put(ActionEnum.WALK_LEFT, ActionEnum.ATTACK_LEFT);
         actingMap.put(ActionEnum.WALK_RIGHT, ActionEnum.ATTACK_RIGHT);
 
-        currentState = previousState = ActionEnum.WALK_DOWN;
-        currentTexture = atlas.findRegion("playerDown1");
     }
 
     public void update(float delta){

@@ -24,28 +24,28 @@ public class AssetComponent {
         return manager;
     }
 
-    public static void loadTileMap(String path){
+    public static TiledMap loadTileMap(String path){
         getManager().setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         getManager().load(path, TiledMap.class);
         getManager().finishLoading();
+
+        return getManager().get(path, TiledMap.class);
     }
 
-    public static void loadAtlas(String path){
+    public static TextureAtlas loadAtlas(String path){
         getManager().setLoader(TextureAtlas.class, new TextureAtlasLoader(new InternalFileHandleResolver()));
         getManager().load(path, TextureAtlas.class);
         getManager().finishLoading();
+
+        return getManager().get(path, TextureAtlas.class);
     }
 
-    public static void loadTexture(String path){
-        getManager().setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        getManager().load(path, Texture.class);
-        getManager().finishLoading();
-    }
-
-    public static void loadFont(String path){
+    public static FreeTypeFontGenerator loadFont(String path){
         getManager().setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(new InternalFileHandleResolver()));
         getManager().load(path, FreeTypeFontGenerator.class);
         getManager().finishLoading();
+
+        return getManager().get(path, FreeTypeFontGenerator.class);
     }
 
     public static void dispose(){

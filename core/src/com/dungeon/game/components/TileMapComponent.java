@@ -6,14 +6,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class TileMapComponent {
 
-    private OrthogonalTiledMapRenderer renderer;
+    private final OrthogonalTiledMapRenderer renderer;
     public TiledMap tiledMap;
     private String mapPath;
 
     public TileMapComponent(String mapPath){
         this.mapPath = mapPath;
-        AssetComponent.loadTileMap(mapPath);
-        this.tiledMap = AssetComponent.getManager().get(this.mapPath);
+        this.tiledMap = AssetComponent.loadTileMap(mapPath);
         this.renderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 

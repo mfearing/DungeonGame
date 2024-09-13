@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.Array;
 import com.dungeon.game.enums.ActionEnum;
 import com.dungeon.game.screens.GameScreen;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class AnimationComponent {
