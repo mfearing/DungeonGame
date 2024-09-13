@@ -65,6 +65,8 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(orthographic.camera.combined);
         shapeRenderer.setProjectionMatrix(orthographic.camera.combined);
 
+        //here we need to add all entities into entity list and order by y-coordinate
+
         //tile map
         tileMapComponent.render(orthographic.camera); //has its own batch, everything afterward is rendered on top (I think)
 
@@ -73,7 +75,7 @@ public class GameScreen implements Screen {
         player.render(batch);
         batch.end();
 
-        //render shapes
+        //render shapes last
         Rectangle rec = player.getScreenSolidArea();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
