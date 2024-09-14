@@ -24,4 +24,9 @@ public class Entity {
         return new Rectangle(x + solidArea.x, y+ solidArea.y, solidArea.width, solidArea.height);
     }
 
+    public Vector2 getScreenSolidAreaCenterVector(){
+        Rectangle rec = getScreenSolidArea();
+        return rec.getCenter(new Vector2());
+    }
+
 }

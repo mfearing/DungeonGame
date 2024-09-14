@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.game.components.AnimationComponent;
 import com.dungeon.game.components.AssetComponent;
+import com.dungeon.game.components.TileMapComponent;
 import com.dungeon.game.enums.ActionEnum;
 import com.dungeon.game.screens.GameScreen;
 
@@ -21,8 +22,10 @@ public class Player extends Entity{
     private long xVelocityCount = 0,
                 yVelocityCount = 0;
     private boolean isActing = false;
-    private float actingCounter = 0.0f;
-    private final float MAX_ACTING = animSpeed / 2.0f;
+    public boolean interacting = false;
+    public float actingCounter = 0.0f;
+    public Vector2 interactPoint;
+    public final float MAX_ACTING = animSpeed / 2.0f;
 
     public ActionEnum currentState, previousState;
     public TextureRegion currentTexture;
@@ -86,6 +89,18 @@ public class Player extends Entity{
         gs.collisionComponent.checkTile(this);
 
         updateIsActing(delta);
+        if(interacting){
+            setInteractionPoint();
+            TileMapComponent.PathObject object = gs.collisionComponent.checkPathObjInteract(interactPoint);
+            if(object != null){
+                //TODO: might want to refactor this so that components handle these changes.
+                gs.inputComponent.enterPressed = false;
+                interacting = false;
+                actingCounter = MAX_ACTING;
+                gs.transitionComponent.doTransition = true;
+                gs.transitionComponent.pathObject = object;
+            }
+        }
 
         //update x and y positions based on velocity after collision checking
         x = x + velocity.x;
@@ -95,9 +110,9 @@ public class Player extends Entity{
     }
 
     public void updateIsActing(float delta){
-
         if(gs.inputComponent.enterPressed && !isActing){ //user presses enter and isn't already acting
-            isActing = true;
+            isActing = true; //used for animation
+            interacting = true; //used for interactPoint
             gs.inputComponent.enterPressed = false;
             previousState = currentState;
             currentState = actingMap.get(currentState);
@@ -112,11 +127,33 @@ public class Player extends Entity{
             actingCounter += delta;
             if(actingCounter >= MAX_ACTING){
                 isActing = false;
+                interacting = false;
                 actingCounter = 0f;
                 currentState = previousState;
             }
         }
 
+    }
+
+    public void setInteractionPoint(){
+        //creates a vector2 point on the map to check for collision with an interactable object
+        Vector2 center = getScreenSolidAreaCenterVector();
+        switch(currentState){
+            case ATTACK_UP:
+                interactPoint = new Vector2(center.x, center.y + solidArea.height);
+                break;
+            case ATTACK_DOWN:
+                interactPoint = new Vector2(center.x, center.y - solidArea.height);
+                break;
+            case ATTACK_LEFT:
+                interactPoint = new Vector2(center.x - solidArea.width, center.y);
+                break;
+            case ATTACK_RIGHT:
+                interactPoint = new Vector2(center.x + solidArea.width, center.y);
+                break;
+            default:
+                interactPoint = null;
+        }
     }
 
     public void render(SpriteBatch batch){

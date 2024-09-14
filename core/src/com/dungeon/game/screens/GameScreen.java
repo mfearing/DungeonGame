@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.dungeon.game.camera.Orthographic;
-import com.dungeon.game.components.AssetComponent;
-import com.dungeon.game.components.CollisionComponent;
-import com.dungeon.game.components.InputComponent;
-import com.dungeon.game.components.TileMapComponent;
+import com.dungeon.game.components.*;
 import com.dungeon.game.entities.Player;
 
 public class GameScreen implements Screen {
@@ -23,12 +20,13 @@ public class GameScreen implements Screen {
 
     Game game;
     public InputComponent inputComponent;
-    private Orthographic orthographic;
+    private final Orthographic orthographic;
     public TileMapComponent tileMapComponent;
     public CollisionComponent collisionComponent;
-    private SpriteBatch batch;
-    private ShapeRenderer shapeRenderer;
-    private Player player;
+    public TransitionComponent transitionComponent;
+    private final SpriteBatch batch;
+    public final ShapeRenderer shapeRenderer;
+    public Player player;
 
     public GameScreen(Game game){
         this.game = game;
@@ -40,7 +38,8 @@ public class GameScreen implements Screen {
 
         orthographic = new Orthographic(WORLD_SIZE);
         batch = new SpriteBatch();
-        tileMapComponent = new TileMapComponent("maps/dungeonMap.tmx");
+        tileMapComponent = new TileMapComponent("room_1.tmx");
+        transitionComponent = new TransitionComponent(this);
     }
 
     @Override
@@ -55,7 +54,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float v) {
-        update(v);
+        if(!transitionComponent.doTransition) {
+            //no updates during transitioning screens
+            update(v);
+        }
 
         //clear screen
         ScreenUtils.clear(0, 0, 0, 1);
@@ -76,11 +78,22 @@ public class GameScreen implements Screen {
         batch.end();
 
         //render shapes last
-        Rectangle rec = player.getScreenSolidArea();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(rec.x, rec.y, rec.getWidth(), rec.getHeight());
-        shapeRenderer.end();
+        if(inputComponent.tPressed) {
+            Rectangle rec = player.getScreenSolidArea();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.rect(rec.x, rec.y, rec.getWidth(), rec.getHeight());
+            shapeRenderer.end();
+        }
+
+        if(transitionComponent.doTransition){
+            transitionComponent.update(v);
+            if(transitionComponent.isTransitionDone()){
+                transitionComponent.doTransition = false;
+                transitionComponent.resetTransition();
+            }
+        }
+
     }
 
     @Override
