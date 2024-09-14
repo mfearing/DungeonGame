@@ -2,6 +2,7 @@ package com.dungeon.game.components;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.dungeon.game.entities.Entity;
 import com.dungeon.game.screens.GameScreen;
 
@@ -36,20 +37,20 @@ public class CollisionComponent {
         int entityTopRow; //find top y coord later
         int entityBottomRow; //find bottom y coord later
 
-        TiledMapTileLayer layer = (TiledMapTileLayer)gs.tileMapComponent.tiledMap.getLayers().get("layer_1");
+        TiledMapTileLayer layer = (TiledMapTileLayer) gs.tileMapComponent.getLayer("base_layer");
 
         if(entity.velocity.y > 0){ // up
             entityTopRow = (int)((entityTopY + entity.velocity.y) / GameScreen.TILE_SIZE);
-            boolean topLeftCollides = "true".equals(layer.getCell(entityLeftCol, entityTopRow).getTile().getProperties().get("collidable"));
-            boolean topRightCollides = "true".equals(layer.getCell(entityRightCol, entityTopRow).getTile().getProperties().get("collidable"));
+            boolean topLeftCollides = layer.getCell(entityLeftCol, entityTopRow).getTile().getProperties().containsKey("collidable");
+            boolean topRightCollides = layer.getCell(entityRightCol, entityTopRow).getTile().getProperties().containsKey("collidable");
             if(topLeftCollides || topRightCollides){
                 entity.velocity.y = 0;
                 entity.y = entityTopRow * GameScreen.TILE_SIZE - screenSolidArea.height - 1;
             }
         } else if(entity.velocity.y < 0){ // down
             entityBottomRow = (int)((entityBottomY + entity.velocity.y) / GameScreen.TILE_SIZE);
-            boolean bottomLeftCollides = "true".equals(layer.getCell(entityLeftCol, entityBottomRow).getTile().getProperties().get("collidable"));
-            boolean bottomRightCollides = "true".equals(layer.getCell(entityRightCol, entityBottomRow).getTile().getProperties().get("collidable"));
+            boolean bottomLeftCollides = layer.getCell(entityLeftCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
+            boolean bottomRightCollides = layer.getCell(entityRightCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
             if(bottomLeftCollides || bottomRightCollides){
                 entity.velocity.y = 0;
                 entity.y = entityBottomRow * GameScreen.TILE_SIZE + GameScreen.TILE_SIZE;
@@ -62,8 +63,8 @@ public class CollisionComponent {
 
         if(entity.velocity.x > 0){ // right
             entityRightCol = (int)((entityRightX + entity.velocity.x) / GameScreen.TILE_SIZE);
-            boolean topRightCollides = "true".equals(layer.getCell(entityRightCol, entityTopRow).getTile().getProperties().get("collidable"));
-            boolean bottomRightCollides = "true".equals(layer.getCell(entityRightCol, entityBottomRow).getTile().getProperties().get("collidable"));
+            boolean topRightCollides = layer.getCell(entityRightCol, entityTopRow).getTile().getProperties().containsKey("collidable");
+            boolean bottomRightCollides = layer.getCell(entityRightCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
             if(topRightCollides || bottomRightCollides){
                 entity.velocity.x = 0;
                 entity.x = entityRightCol * GameScreen.TILE_SIZE - entity.solidArea.x - screenSolidArea.width - 1; //closes gap to wall
@@ -71,15 +72,26 @@ public class CollisionComponent {
 
         } else if(entity.velocity.x < 0){ // left
             entityLeftCol = (int)((entityLeftX + entity.velocity.x) / GameScreen.TILE_SIZE);
-            boolean topLefttCollides = "true".equals(layer.getCell(entityLeftCol, entityTopRow).getTile().getProperties().get("collidable"));
-            boolean bottomLeftCollides = "true".equals(layer.getCell(entityLeftCol, entityBottomRow).getTile().getProperties().get("collidable"));
+            boolean topLefttCollides = layer.getCell(entityLeftCol, entityTopRow).getTile().getProperties().containsKey("collidable");
+            boolean bottomLeftCollides = layer.getCell(entityLeftCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
             if(topLefttCollides || bottomLeftCollides){
                 entity.velocity.x = 0;
                 entity.x = entityLeftCol * GameScreen.TILE_SIZE + entity.solidArea.x + screenSolidArea.width;
             }
         }
 
+    }
 
+    public TileMapComponent.PathObject checkPathObjInteract(Vector2 interactPoint){
+        for(TileMapComponent.PathEnum path : gs.tileMapComponent.paths.keySet()){
+            //construct Rectangle from path row/col to represent tile
+            TileMapComponent.PathObject obj = gs.tileMapComponent.paths.get(path);
+            Rectangle rec = new Rectangle(obj.col * GameScreen.TILE_SIZE, obj.row * GameScreen.TILE_SIZE, GameScreen.TILE_SIZE, GameScreen.TILE_SIZE);
+            if(rec.contains(interactPoint)){
+                return obj;
+            }
+        }
+        return null;
     }
 
 

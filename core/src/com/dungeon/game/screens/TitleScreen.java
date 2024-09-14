@@ -17,6 +17,7 @@ import java.util.Map;
 public class TitleScreen implements Screen {
 
     private static final String FONT_PATH = "fonts/pixel_font.ttf";
+    private static final String PLAYER_ATLAS_PATH = "atlas/player.atlas";
 
     Game game;
     public static final int TILE_SIZE = 32,
@@ -26,9 +27,9 @@ public class TitleScreen implements Screen {
     private InputComponent inputComponent;
     private Orthographic orthographic;
     private SpriteBatch spriteBatch;
-    private BitmapFont titleFont;
-    private BitmapFont optionFont;
-    private BitmapFont controlFont;
+    private BitmapFont  titleFont,
+                        optionFont,
+                        controlFont;
     private GlyphLayout layout;
 
     TextureAtlas atlas;
@@ -46,16 +47,12 @@ public class TitleScreen implements Screen {
         orthographic = new Orthographic(WORLD_SIZE);
         spriteBatch = new SpriteBatch();
         layout = new GlyphLayout();
+        atlas = AssetComponent.loadAtlas(PLAYER_ATLAS_PATH);
+        FreeTypeFontGenerator generator = AssetComponent.loadFont(FONT_PATH);
+        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         Gdx.input.setInputProcessor(inputComponent);
 
-        AssetComponent.loadFont(FONT_PATH);
-        FreeTypeFontGenerator generator = AssetComponent.getManager().get(FONT_PATH, FreeTypeFontGenerator.class);
-
-        AssetComponent.loadAtlas("atlas/player.atlas");
-        atlas = AssetComponent.getManager().get("atlas/player.atlas", TextureAtlas.class);
-
-        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
         param.color = Color.WHITE;
         param.size = TILE_SIZE * 2 - 4;
         titleFont = generator.generateFont(param);

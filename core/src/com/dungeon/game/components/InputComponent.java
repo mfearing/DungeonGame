@@ -12,6 +12,7 @@ public class InputComponent implements InputProcessor {
     public boolean leftPressed = false;
     public boolean rightPressed = false;
     public boolean enterPressed = false;
+    public boolean tPressed = false;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -30,6 +31,9 @@ public class InputComponent implements InputProcessor {
                 break;
             case Keys.ENTER:
                 enterPressed = true;
+                break;
+            case Keys.T:
+                tPressed = true;
                 break;
         }
         return true;
@@ -52,6 +56,9 @@ public class InputComponent implements InputProcessor {
                 break;
             case Keys.ENTER:
                 enterPressed = false;
+                break;
+            case Keys.T:
+                tPressed = false;
                 break;
         }
         return true;
@@ -96,8 +103,14 @@ public class InputComponent implements InputProcessor {
         return upPressed || downPressed || leftPressed || rightPressed;
     }
 
+    public Vector2 getVelocityWithCondition(float speed, float delta, boolean condition){
+        if(condition){
+            return getVelocity(speed, delta);
+        }
+        return new Vector2(0, 0); //acting entities are not moving
+    }
+
     public Vector2 getVelocity(float speed, float delta){
-        //TODO: Does this actually need to be here?  It's not part of input
         float xVelocity;
 
         if(leftPressed || rightPressed){

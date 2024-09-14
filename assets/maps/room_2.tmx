@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="2">
+ <properties>
+  <property name="id" type="int" value="2"/>
+  <property name="west" type="int" value="1"/>
+ </properties>
+ <tileset firstgid="1" source="tile_atlas.tsx"/>
+ <layer id="1" name="base_layer" width="15" height="15">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,2,2,2,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,2,1,1,1,1,1,2,
+2,1,1,1,1,1,2,2,2,1,1,1,1,1,2,
+2,1,1,1,1,1,2,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,2,2,2,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <objectgroup id="2" name="path_layer">
+  <object id="1" name="west" x="15.7077" y="238.887">
+   <properties>
+    <property name="col" type="int" value="0"/>
+    <property name="row" type="int" value="7"/>
+    <property name="west" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
