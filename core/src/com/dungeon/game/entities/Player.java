@@ -93,7 +93,7 @@ public class Player extends Entity{
             setInteractionPoint();
             TileMapComponent.PathObject object = gs.collisionComponent.checkPathObjInteract(interactPoint);
             if(object != null){
-                //TODO: might want to refactor this so that components handle these changes.
+                //TODO: might want to refactor this so that components handle these changes based on component type
                 gs.inputComponent.enterPressed = false;
                 interacting = false;
                 actingCounter = MAX_ACTING;

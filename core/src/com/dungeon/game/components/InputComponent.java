@@ -33,7 +33,7 @@ public class InputComponent implements InputProcessor {
                 enterPressed = true;
                 break;
             case Keys.T:
-                tPressed = true;
+                tPressed = !tPressed;
                 break;
         }
         return true;
@@ -58,7 +58,7 @@ public class InputComponent implements InputProcessor {
                 enterPressed = false;
                 break;
             case Keys.T:
-                tPressed = false;
+                //tPressed = false;
                 break;
         }
         return true;

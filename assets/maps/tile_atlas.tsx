@@ -6,4 +6,9 @@
    <property name="collidable" value=""/>
   </properties>
  </tile>
+ <tile id="2">
+  <properties>
+   <property name="collidable" value=""/>
+  </properties>
+ </tile>
 </tileset>

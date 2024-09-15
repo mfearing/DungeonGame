@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,6 +26,7 @@ public class GameScreen implements Screen {
     public CollisionComponent collisionComponent;
     public TransitionComponent transitionComponent;
     private final SpriteBatch batch;
+    private final BitmapFont font;
     public final ShapeRenderer shapeRenderer;
     public Player player;
 
@@ -35,6 +37,7 @@ public class GameScreen implements Screen {
 
         collisionComponent = new CollisionComponent(this);
         shapeRenderer = new ShapeRenderer();
+        font = new BitmapFont();
 
         orthographic = new Orthographic(WORLD_SIZE);
         batch = new SpriteBatch();
@@ -75,6 +78,7 @@ public class GameScreen implements Screen {
         //render entities
         batch.begin();
         player.render(batch);
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), TILE_SIZE, WORLD_SIZE - 8);
         batch.end();
 
         //render shapes last
