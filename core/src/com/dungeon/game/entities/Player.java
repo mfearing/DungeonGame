@@ -19,8 +19,6 @@ public class Player extends Entity{
     private static final String PLAYER_ATLAS = "atlas/player.atlas";
     private TextureAtlas atlas;
     private float animSpeed = .5f;
-    private long xVelocityCount = 0,
-                yVelocityCount = 0;
     private boolean isActing = false;
     public boolean interacting = false;
     public float actingCounter = 0.0f;
@@ -164,6 +162,7 @@ public class Player extends Entity{
         atlas.dispose();
     }
 
+    //TODO: This might be better as a component?  Other entities can use this, eventually
     public ActionEnum getCurrentState(Vector2 v){
         //CHECK VERTICAL MOVEMENT
         if(gs.inputComponent.upPressed || gs.inputComponent.downPressed) {
