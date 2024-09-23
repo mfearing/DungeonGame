@@ -41,16 +41,16 @@ public class CollisionComponent {
 
         if(entity.velocity.y > 0){ // up
             entityTopRow = (int)((entityTopY + entity.velocity.y) / GameScreen.TILE_SIZE);
-            boolean topLeftCollides = layer.getCell(entityLeftCol, entityTopRow).getTile().getProperties().containsKey("collidable");
-            boolean topRightCollides = layer.getCell(entityRightCol, entityTopRow).getTile().getProperties().containsKey("collidable");
+            boolean topLeftCollides = getCollidable(layer, entityLeftCol, entityTopRow);
+            boolean topRightCollides = getCollidable(layer, entityRightCol, entityTopRow);
             if(topLeftCollides || topRightCollides){
                 entity.velocity.y = 0;
                 entity.y = entityTopRow * GameScreen.TILE_SIZE - screenSolidArea.height - 1;
             }
         } else if(entity.velocity.y < 0){ // down
             entityBottomRow = (int)((entityBottomY + entity.velocity.y) / GameScreen.TILE_SIZE);
-            boolean bottomLeftCollides = layer.getCell(entityLeftCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
-            boolean bottomRightCollides = layer.getCell(entityRightCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
+            boolean bottomLeftCollides = getCollidable(layer, entityLeftCol, entityBottomRow);
+            boolean bottomRightCollides = getCollidable(layer, entityRightCol, entityBottomRow);
             if(bottomLeftCollides || bottomRightCollides){
                 entity.velocity.y = 0;
                 entity.y = entityBottomRow * GameScreen.TILE_SIZE + GameScreen.TILE_SIZE;
@@ -63,8 +63,8 @@ public class CollisionComponent {
 
         if(entity.velocity.x > 0){ // right
             entityRightCol = (int)((entityRightX + entity.velocity.x) / GameScreen.TILE_SIZE);
-            boolean topRightCollides = layer.getCell(entityRightCol, entityTopRow).getTile().getProperties().containsKey("collidable");
-            boolean bottomRightCollides = layer.getCell(entityRightCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
+            boolean topRightCollides = getCollidable(layer, entityRightCol, entityTopRow);
+            boolean bottomRightCollides = getCollidable(layer, entityRightCol, entityBottomRow);
             if(topRightCollides || bottomRightCollides){
                 entity.velocity.x = 0;
                 entity.x = entityRightCol * GameScreen.TILE_SIZE - entity.solidArea.x - screenSolidArea.width - 1; //closes gap to wall
@@ -72,14 +72,19 @@ public class CollisionComponent {
 
         } else if(entity.velocity.x < 0){ // left
             entityLeftCol = (int)((entityLeftX + entity.velocity.x) / GameScreen.TILE_SIZE);
-            boolean topLefttCollides = layer.getCell(entityLeftCol, entityTopRow).getTile().getProperties().containsKey("collidable");
-            boolean bottomLeftCollides = layer.getCell(entityLeftCol, entityBottomRow).getTile().getProperties().containsKey("collidable");
+            boolean topLefttCollides = getCollidable(layer, entityLeftCol, entityTopRow);
+            boolean bottomLeftCollides = getCollidable(layer, entityLeftCol, entityBottomRow);
             if(topLefttCollides || bottomLeftCollides){
                 entity.velocity.x = 0;
                 entity.x = entityLeftCol * GameScreen.TILE_SIZE + entity.solidArea.x + screenSolidArea.width;
             }
         }
 
+    }
+
+    private boolean getCollidable(TiledMapTileLayer layer, int col, int row){
+        return layer.getCell(col, row) != null &&
+                layer.getCell(col, row).getTile().getProperties().containsKey("collidable");
     }
 
     public TileMapComponent.PathObject checkPathObjInteract(Vector2 interactPoint){

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dungeon.game.screens.GameScreen;
 
+//TODO: NOt really a component, more like an effect?  Might need refactoring because it's not meant to be used on an entity
 public class TransitionComponent {
 
     GameScreen gs;
@@ -73,10 +74,10 @@ public class TransitionComponent {
     private void repositionPlayer(){
         switch(gs.player.currentState){
             case ATTACK_UP:
-                gs.player.y = GameScreen.TILE_SIZE * 2;
+                gs.player.y = GameScreen.TILE_SIZE;
                 break;
             case ATTACK_DOWN:
-                gs.player.y = GameScreen.WORLD_SIZE - GameScreen.TILE_SIZE;
+                gs.player.y = GameScreen.WORLD_SIZE - GameScreen.TILE_SIZE * 2;
                 break;
             case ATTACK_LEFT:
                 gs.player.x = GameScreen.WORLD_SIZE - GameScreen.TILE_SIZE * 2;

@@ -7,7 +7,9 @@ import com.dungeon.game.screens.GameScreen;
 public class Entity {
     public float x; //x position within the world
     public float y; //y position within the world
-    public Vector2 velocity;
+    public Vector2 velocity; //movement speed
+    public long xVelocityCount = 0; //used for seeing how long an entity has been moving along the x axis
+    public long yVelocityCount = 0; //used for seeing how long an entity has been moving along the y axis
     public float speed; //World Size and Tile Size are 1 to 1, so 2.5 tiles per second is the speed.
     public Rectangle solidArea;
 
